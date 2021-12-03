@@ -60,3 +60,18 @@ func TestNavigateSubAimFile(t *testing.T) {
 
 	fmt.Printf("challenge input data got %d larger numbers then previous\n", got)
 }
+
+func BenchmarkNavigateSubFile(b *testing.B) {
+	data := []Operation{
+		{"forward", 5},
+		{"down", 5},
+		{"forward", 8},
+		{"up", 3},
+		{"down", 8},
+		{"forward", 2},
+	}
+
+	for i := 0; i < b.N; i++ {
+		NavigateSub(data)
+	}
+}

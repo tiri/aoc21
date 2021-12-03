@@ -31,16 +31,15 @@ func LargerThenPreviousSlidingWindow(list []int) int {
 		return 0
 	}
 
-	previous := sumArray(list[0 : window])
+	previous := sumArray(list[0:window])
 
 	for i := window; i < len(list); i++ {
-		current := sumArray(list[i-window + 1 : i + 1])
+		current := sumArray(list[i-window+1 : i+1])
 		if previous < current {
 			largerThenPrevious++
 		}
 		previous = current
 	}
-
 
 	return largerThenPrevious
 }

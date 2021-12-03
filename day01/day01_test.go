@@ -14,7 +14,7 @@ func TestLargerThenPrevious(t *testing.T) {
 	}
 }
 
-func TestLargerThenPreviousChallengeInput(t *testing.T)  {
+func TestLargerThenPreviousChallengeInput(t *testing.T) {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
@@ -34,8 +34,7 @@ func TestLargerThenPreviousSlidingWindow(t *testing.T) {
 	}
 }
 
-
-func TestLargerThenPreviousSlidingWindowChallengeInput(t *testing.T)  {
+func TestLargerThenPreviousSlidingWindowChallengeInput(t *testing.T) {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)

@@ -27,7 +27,7 @@ func TestCalculateGammaEpsilon(t *testing.T) {
 	}
 }
 
-func TestCalculateGammaEpsilonFile(t *testing.T)  {
+func TestCalculateGammaEpsilonFile(t *testing.T) {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)
@@ -60,7 +60,7 @@ func TestCalculateOxygenCO2(t *testing.T) {
 	}
 }
 
-func TestCalculateOxygenCO2File(t *testing.T)  {
+func TestCalculateOxygenCO2File(t *testing.T) {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		fmt.Println("File reading error", err)

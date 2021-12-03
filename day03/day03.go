@@ -19,15 +19,15 @@ func CalculateGammaEpsilon(data []uint, length int) uint {
 		for _, datum := range data {
 			if (datum>>pos)&1 == 1 {
 				ones++
-			} else {
-				zeros++
 			}
 		}
 
+		zeros = len(data) - ones
+
 		if ones > zeros {
-			gamma = gamma | (1 << pos)
+			gamma |= 1 << pos
 		} else {
-			epsilon = epsilon | (1 << pos)
+			epsilon |= 1 << pos
 		}
 	}
 
@@ -64,10 +64,10 @@ func getMostOrLeastCommon(data []uint, pos int, mostCommon bool) []uint {
 	for _, datum := range data {
 		if (datum>>pos)&1 == 1 {
 			ones++
-		} else {
-			zeros++
 		}
 	}
+
+	zeros = len(data) - ones
 
 	var filterCharAtPos uint
 
@@ -98,7 +98,6 @@ func CalculateOxygenCO2File(file *os.File) uint {
 }
 
 func parseFile(file *os.File) ([]uint, int) {
-
 	length := 0
 	scanner := bufio.NewScanner(file)
 
