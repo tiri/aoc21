@@ -71,3 +71,24 @@ func TestCalculateOxygenCO2File(t *testing.T) {
 
 	fmt.Printf("challenge input data got %d\n", got)
 }
+
+func BenchmarkNavigateSubFile(b *testing.B) {
+	data := []uint{
+		0b00100,
+		0b11110,
+		0b10110,
+		0b10111,
+		0b10101,
+		0b01111,
+		0b00111,
+		0b11100,
+		0b10000,
+		0b11001,
+		0b00010,
+		0b01010,
+	}
+
+	for i := 0; i < b.N; i++ {
+		CalculateOxygenCO2(data, 5)
+	}
+}

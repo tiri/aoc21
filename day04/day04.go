@@ -18,8 +18,9 @@ func Play(drawnNumbers []uint, boards []Board) uint {
 	for _, drawn := range drawnNumbers {
 		for i, board := range boards {
 			boards[i] = markBoard(drawn, board)
-			sum := checkWin(boards[i])
-			if sum > 0 {
+			win := checkWin(boards[i])
+			if win {
+				sum := sumUnmarked(boards[i])
 				return sum * drawn
 			}
 		}
@@ -44,8 +45,9 @@ func PlayLast(drawnNumbers []uint, boards []Board) uint {
 			}
 
 			boards[s] = markBoard(drawn, board)
-			sum := checkWin(boards[s])
-			if sum > 0 {
+			win := checkWin(boards[s])
+			if win {
+				sum := sumUnmarked(boards[s])
 				calc = sum * drawn
 				alreadyWonBoardIndexes = append(alreadyWonBoardIndexes, s)
 			}
@@ -70,10 +72,7 @@ func markBoard(drawn uint, board Board) Board {
 	return board
 }
 
-func checkWin(board Board) uint {
-
-	win := false
-
+func checkWin(board Board) bool {
 	// check horizontal
 	for y := 0; y < 5; y++ {
 		for x := 0; x < 5; x++ {
@@ -82,8 +81,7 @@ func checkWin(board Board) uint {
 				break
 			}
 			if x == 4 {
-				win = true
-				break
+				return true
 			}
 		}
 	}
@@ -96,35 +94,24 @@ func checkWin(board Board) uint {
 				break
 			}
 			if y == 4 {
-				win = true
-				break
+				return true
 			}
 		}
 	}
 
-	for y := 0; y < 5; y++ {
-		for x := 0; x < 5; x++ {
-			field := &board[x][y]
-			if field.marked == false {
-				break
+	return false
+}
+
+func sumUnmarked(board Board) uint {
+	sum := uint(0)
+	for x := 0; x < 5; x++ {
+		for y := 0; y < 5; y++ {
+			if board[x][y].marked == false {
+				sum += board[x][y].value
 			}
 		}
 	}
-
-	// sum unmarked
-	if win {
-		sum := uint(0)
-		for x := 0; x < 5; x++ {
-			for y := 0; y < 5; y++ {
-				if board[x][y].marked == false {
-					sum += board[x][y].value
-				}
-			}
-		}
-		return sum
-	}
-
-	return 0
+	return sum
 }
 
 func parseFile(file *os.File) ([]uint, []Board) {
