@@ -16,11 +16,11 @@ type Board [5][5]Field
 
 func Play(drawnNumbers []uint, boards []Board) uint {
 	for _, drawn := range drawnNumbers {
-		for i, board := range boards {
-			boards[i] = markBoard(drawn, board)
-			win := checkWin(boards[i])
-			if win {
-				sum := sumUnmarked(boards[i])
+		for idx, _ := range boards {
+			boards[idx].mark(drawn)
+
+			if boards[idx].checkWin() {
+				sum := boards[idx].sumUnmarked()
 				return sum * drawn
 			}
 		}
@@ -38,18 +38,17 @@ func PlayLast(drawnNumbers []uint, boards []Board) uint {
 	var alreadyWonBoardIndexes []int
 
 	for _, drawn := range drawnNumbers {
-
-		for s, board := range boards {
-			if contains(alreadyWonBoardIndexes, s) {
+		for idx, _ := range boards {
+			if contains(alreadyWonBoardIndexes, idx) {
 				continue
 			}
 
-			boards[s] = markBoard(drawn, board)
-			win := checkWin(boards[s])
-			if win {
-				sum := sumUnmarked(boards[s])
+			boards[idx].mark(drawn)
+
+			if boards[idx].checkWin() {
+				sum := boards[idx].sumUnmarked()
 				calc = sum * drawn
-				alreadyWonBoardIndexes = append(alreadyWonBoardIndexes, s)
+				alreadyWonBoardIndexes = append(alreadyWonBoardIndexes, idx)
 			}
 		}
 	}
@@ -61,7 +60,7 @@ func PlayLastFile(file *os.File) uint {
 	return PlayLast(parseFile(file))
 }
 
-func markBoard(drawn uint, board Board) Board {
+func (board *Board) mark(drawn uint) {
 	for x, row := range board {
 		for y, field := range row {
 			if field.value == drawn {
@@ -69,10 +68,9 @@ func markBoard(drawn uint, board Board) Board {
 			}
 		}
 	}
-	return board
 }
 
-func checkWin(board Board) bool {
+func (board *Board) checkWin() bool {
 	// check horizontal
 	for y := 0; y < 5; y++ {
 		for x := 0; x < 5; x++ {
@@ -102,7 +100,7 @@ func checkWin(board Board) bool {
 	return false
 }
 
-func sumUnmarked(board Board) uint {
+func (board *Board) sumUnmarked() uint {
 	sum := uint(0)
 	for x := 0; x < 5; x++ {
 		for y := 0; y < 5; y++ {
