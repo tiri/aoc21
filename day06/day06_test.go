@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCalcAmountOfLanternfishAfterXDays(t *testing.T) {
+func TestCalcAmountOfLanternfishAfter18Days(t *testing.T) {
 	initialDay := []uint{
 		3, 4, 3, 1, 2,
 	}
