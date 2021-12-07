@@ -11,7 +11,7 @@ func TestCalcLowestFuelBurned(t *testing.T) {
 		16, 1, 2, 0, 4, 2, 7, 1, 2, 14,
 	}
 
-	got := CalcLowestFuelBurned(crabs)
+	got := CalcLowestFuelBurned(crabs, false)
 	if got != 37 {
 		t.Errorf("Play = %d, want 37\n", got)
 	}
@@ -24,7 +24,7 @@ func TestCalcLowestFuelBurnedFile(t *testing.T) {
 		return
 	}
 
-	got := CalcLowestFuelBurnedFile(file)
+	got := CalcLowestFuelBurnedFile(file, false)
 
 	fmt.Printf("challenge input data got %d\n", got)
 }
@@ -34,7 +34,7 @@ func TestCalcLowestFuelBurnedExpensive(t *testing.T) {
 		16, 1, 2, 0, 4, 2, 7, 1, 2, 14,
 	}
 
-	got := CalcLowestFuelBurnedExpensive(crabs)
+	got := CalcLowestFuelBurned(crabs, true)
 	if got != 168 {
 		t.Errorf("Play = %d, want 168\n", got)
 	}
@@ -47,7 +47,7 @@ func TestCalcLowestFuelBurnedExpensiveFile(t *testing.T) {
 		return
 	}
 
-	got := CalcLowestFuelBurnedExpensiveFile(file)
+	got := CalcLowestFuelBurnedFile(file, true)
 
 	fmt.Printf("challenge input data got %d\n", got)
 }

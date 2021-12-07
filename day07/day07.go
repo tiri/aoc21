@@ -7,42 +7,8 @@ import (
 	"strings"
 )
 
-func CalcLowestFuelBurned(crabs []uint) uint {
+func CalcLowestFuelBurned(crabs []uint, moreExpensiveWithMoreSteps bool) uint {
 
-	minCrab, maxCrab := getMinMax(crabs)
-
-	lowestFuelUsage := uint(0)
-
-	horizontalPos := minCrab
-	for {
-		currentFuelUsage := uint(0)
-		for _, crab := range crabs {
-			if horizontalPos > crab {
-				currentFuelUsage += horizontalPos - crab
-			} else {
-				currentFuelUsage += crab - horizontalPos
-			}
-		}
-
-		if currentFuelUsage < lowestFuelUsage || lowestFuelUsage == 0 {
-			lowestFuelUsage = currentFuelUsage
-		}
-
-		if horizontalPos >= maxCrab {
-			break
-		}
-
-		horizontalPos++
-	}
-
-	return lowestFuelUsage
-}
-
-func CalcLowestFuelBurnedFile(file *os.File) uint {
-	return CalcLowestFuelBurned(parseFile(file))
-}
-
-func CalcLowestFuelBurnedExpensive(crabs []uint) uint {
 	minCrab, maxCrab := getMinMax(crabs)
 
 	lowestFuelUsage := uint(0)
@@ -57,7 +23,13 @@ func CalcLowestFuelBurnedExpensive(crabs []uint) uint {
 			} else {
 				steps += crab - horizontalPos
 			}
-			currentFuelUsage += steps * (steps + 1) / 2
+
+			if !moreExpensiveWithMoreSteps {
+				currentFuelUsage += steps
+			} else {
+				currentFuelUsage += steps * (steps + 1) / 2
+			}
+
 		}
 
 		if currentFuelUsage < lowestFuelUsage || lowestFuelUsage == 0 {
@@ -74,8 +46,8 @@ func CalcLowestFuelBurnedExpensive(crabs []uint) uint {
 	return lowestFuelUsage
 }
 
-func CalcLowestFuelBurnedExpensiveFile(file *os.File) uint {
-	return CalcLowestFuelBurnedExpensive(parseFile(file))
+func CalcLowestFuelBurnedFile(file *os.File, moreExpensiveWithMoreSteps bool) uint {
+	return CalcLowestFuelBurned(parseFile(file), moreExpensiveWithMoreSteps)
 }
 
 func parseFile(file *os.File) []uint {
