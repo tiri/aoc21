@@ -3,6 +3,7 @@ package day09
 import (
 	"bufio"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -21,41 +22,43 @@ func CalcRiskLevelsFile(file *os.File) uint {
 }
 
 func CalcBasin(data [][]uint) uint {
-	var basins []uint
+	var basins []int
 
 	for _, pos := range findLowPoints(data) {
-		sum, _ := analyseBasin(data, pos[0], pos[1], uint(0))
-		basins = append(basins, sum)
+		sum := analyseBasin(data, pos[0], pos[1])
+		basins = append(basins, int(sum))
 	}
 
-	firstMaxElement, firstMaxPos := findMax(basins)
-	secondMaxElement, secondMaxPos := findMax(append(basins[:firstMaxPos], basins[firstMaxPos+1:]...))
-	thirdMaxElement, _ := findMax(append(basins[:secondMaxPos], basins[secondMaxPos+1:]...))
+	sort.Ints(basins)
 
-	return firstMaxElement * secondMaxElement * thirdMaxElement
+	sum := uint(1)
+	for _, value := range basins[len(basins) - 3:] {
+		sum *= uint(value)
+	}
+	return sum
 }
 
-func analyseBasin(data [][]uint, x uint, y uint, sum uint) (uint, [][]uint) {
-	sum += 1
+func analyseBasin(data [][]uint, x uint, y uint) uint {
+	sum := uint(1)
 	data[y][x] = 9
-
+	
 	if x > 0 && data[y][x-1] < 9 {
-		sum, data = analyseBasin(data, x-1, y, sum)
+		sum += analyseBasin(data, x-1, y)
 	}
 
 	if x < uint(len(data[y]))-1 && data[y][x+1] < 9 {
-		sum, data = analyseBasin(data, x+1, y, sum)
+		sum += analyseBasin(data, x+1, y)
 	}
 
 	if y > 0 && data[y-1][x] < 9 {
-		sum, data = analyseBasin(data, x, y-1, sum)
+		sum += analyseBasin(data, x, y-1)
 	}
 
 	if y < uint(len(data))-1 && data[y+1][x] < 9 {
-		sum, data = analyseBasin(data, x, y+1, sum)
+		sum += analyseBasin(data, x, y+1)
 	}
 
-	return sum, data
+	return sum
 }
 
 func CalcBasinFile(file *os.File) uint {
@@ -97,18 +100,4 @@ func findLowPoints(data [][]uint) [][2]uint {
 	}
 
 	return lowPoints
-}
-
-func findMax(array []uint) (uint, uint) {
-	max := array[0]
-	pos := uint(0)
-
-	for index, element := range array {
-		if element > max {
-			pos = uint(index)
-			max = element
-		}
-	}
-
-	return max, pos
 }
