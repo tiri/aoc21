@@ -32,7 +32,7 @@ func CalcBasin(data [][]uint) uint {
 	sort.Ints(basins)
 
 	sum := uint(1)
-	for _, value := range basins[len(basins) - 3:] {
+	for _, value := range basins[len(basins)-3:] {
 		sum *= uint(value)
 	}
 	return sum
@@ -41,7 +41,7 @@ func CalcBasin(data [][]uint) uint {
 func analyseBasin(data [][]uint, x uint, y uint) uint {
 	sum := uint(1)
 	data[y][x] = 9
-	
+
 	if x > 0 && data[y][x-1] < 9 {
 		sum += analyseBasin(data, x-1, y)
 	}
